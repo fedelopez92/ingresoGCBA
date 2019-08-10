@@ -7,6 +7,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DatosComponent implements OnInit {
 
+  dni: string;
+  nombre: string;
+  apellido: string;
+  tarjetaIngreso: number;
+  FechaIngreso: Date;
+  HoraIngreso: Date;
+  visita: string;
+  sector: string
+
   constructor() { }
 
   ngOnInit() {
