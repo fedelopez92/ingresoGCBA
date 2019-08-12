@@ -9,15 +9,19 @@ import { Ingreso } from '../../clases/ingreso';
 })
 export class DatosComponent implements OnInit {
 
-  dni: string;
+  dni: number;
   nombre: string;
   apellido: string;
   tarjetaIngreso: number;
   fechaIngreso: string;
   horaIngreso: string;
-  idEmpleado: number;
+  nombreEmpleado: string;
   ingreso: Ingreso;
   fechaHora = new Date();
+  empleados: object;
+  sectores: object;
+  datosEmpleado: object;
+  datosSector: object;
 
   constructor(private http: HttpService) { }
 
@@ -29,10 +33,21 @@ export class DatosComponent implements OnInit {
       this.fechaIngreso = this.fechaHora.getDate().toString() + "/" + (this.fechaHora.getMonth()+1).toString() + "/" + this.fechaHora.getUTCFullYear().toString();
       this.horaIngreso =  this.fechaHora.toLocaleString('es-AR', { hour: 'numeric',minute:'numeric', hour12: true }); 
     }, 1000);
+    
+    this.http.traerEmpleados().subscribe( data => {
+
+      this.sectores = data;
+    }, error => {
+        alert("No se puede acceder al servidor. Código de error: " + error.status);
+   });
+
   }
 
   ConsultarRenaper(){
-    this.http.traerDatosRenaper(this.dni).subscribe( data => {
+    
+    if(this.dni.toString().length == 8){
+    
+    this.http.traerDatosRenaper(this.dni.toString()).subscribe( data => {
       if(data != ""){
         JSON.parse(JSON.stringify(data)).forEach(element => {
           this.nombre = element.nombres;
@@ -40,24 +55,49 @@ export class DatosComponent implements OnInit {
         });
       }
       else{
-        console.log("El DNI ingresado no es válido");
+        alert("El DNI ingresado no corresponde a ninguna persona");
       }
     }, error => {
-      console.log("El servidor no esta funcionando. Error " + error.status);
+      alert("El servicio RENAPER no esta funcionando. Código de error: " + error.status);
+   });
+  }
+   else
+   {
+      alert("Ingrese un dni válido");
+   }
+  }
+  
+  EnviarDatos(){
+
+    if(this.tarjetaIngreso.toString().length != 8){
+      alert("Ingrese un código de tarjeta que contenga 8 dígitos");
+    }
+    else if(this.datosEmpleado == null || this.datosSector == null) {
+      alert("Seleccione el sector y la persona a quien desea visitar");
+    }
+    else{
     
+      this.nombreEmpleado = JSON.parse(JSON.stringify(this.datosEmpleado)).nombre + " " + JSON.parse(JSON.stringify(this.datosEmpleado)).apellido;
+      this.ingreso = new Ingreso(this.fechaIngreso, this.horaIngreso, this.tarjetaIngreso, this.dni.toString(), this.nombreEmpleado);
+
+      this.http.altaIngreso(this.ingreso).subscribe( data => {
+        console.log(data);
+      }, error => {
+        alert("No se puede acceder al servidor. Código de error: " + error.status);
+      });
+    }
+  }
+
+  MostrarNombreEmpleados(sector){
+    this.http.traerEmpleadosPorSector(sector).subscribe( data => {
+
+      this.datosSector = sector;
+      this.empleados = data;
+    }, error => {
+      alert("No se puede acceder al servidor. Código de error: " + error.status);
    });
   }
 
   
-  EnviarDatos(){
-
-    this.ingreso = new Ingreso(this.dni, this.nombre, this.apellido, this.tarjetaIngreso, this.fechaIngreso, this.horaIngreso, this.idEmpleado);
-
-    this.http.altaIngreso(this.ingreso).subscribe( data => {
-      console.log(data);
-    }, error => {
-      console.log(error);
-    });
-  }
 
 }

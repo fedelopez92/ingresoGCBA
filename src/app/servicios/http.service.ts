@@ -8,6 +8,14 @@ export class HttpService {
 
   constructor(private httpClient: HttpClient) { }
 
+  traerEmpleados(){
+    return this.httpClient.get('http://localhost/servidorGCBA/empleados');
+  }
+
+  traerEmpleadosPorSector(sector){
+    return this.httpClient.get('http://localhost/servidorGCBA/empleados/' + sector);
+  }
+
   traerDatosRenaper(dni){
     return this.httpClient.get('http://localhost/servidorGCBA/renaper/' + dni);
   }

@@ -11,7 +11,7 @@
               <div class="col"><h6 class="font-weight-bold">DNI</h6></div>
           </div>
           <div class="row">
-            <div class="col"><input type="text" class="form-control" placeholder="Ingrese DNI" [(ngModel)]="dni"></div>
+            <div class="col"><input type="number" class="form-control" placeholder="Ingrese DNI" [(ngModel)]="dni"></div>
             <div class="col"><button type="button" class="btn btn-warning btn-sm" (click)="ConsultarRenaper()"><h6 class="text-danger font-weight-bold">Consultar</h6></button></div>
           </div>             
         </td>
@@ -31,16 +31,13 @@
             <div class="col"><h6 class="font-weight-bold">Fecha de ingreso</h6></div>
           </div>
           <div class="row">
-            <div class="col"><input type="text" class="form-control" placeholder="Ingrese número" [(ngModel)]="tarjetaIngreso"></div>
+            <div class="col"><input type="number" class="form-control" placeholder="Ingrese número" [(ngModel)]="tarjetaIngreso"></div>
             <div class="col mt-2"><h6 class="font-weight-normal">{{fechaIngreso}}</h6></div>
           </div>   
 
           <h6 class="font-weight-bold pt-3">Visita a</h6>
-          <select class="form-control" placeholder="Seleccione a la persona visitada" [(ngModel)]="visita">
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
-            <option>4</option>
+          <select class="form-control" placeholder="Seleccione a la persona visitada" [(ngModel)]="datosEmpleado">
+            <option *ngFor="let item of empleados" [ngValue]="item">{{item.nombre}} {{item.apellido}}</option>
           </select>
         </td>
 
@@ -49,15 +46,13 @@
           <h6 class="font-weight-normal pt-2">{{horaIngreso}}</h6>
 
           <h6 class="font-weight-bold pt-3">Sector</h6>
-          <select class="form-control" placeholder="Seleccione sector de la persona visitada" [(ngModel)]="sector">
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
-            <option>4</option>
+          <select class="form-control" placeholder="Seleccione sector de la persona visitada" (change)="MostrarNombreEmpleados($event.target.value)">
+            <option> </option>
+            <option *ngFor="let item of sectores">{{item.sector}}</option>
           </select>
 
           <div class="d-flex justify-content-end mt-4">
-            <button type="button" class="btn btn-warning btn-sm"><h6 class="text-danger font-weight-bold">Ingresar</h6></button>
+            <button type="button" class="btn btn-warning btn-sm" (click)="EnviarDatos()"><h6 class="text-danger font-weight-bold">Ingresar</h6></button>
           </div>
         </td>
 

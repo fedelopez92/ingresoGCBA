@@ -1,12 +1,10 @@
 export class Ingreso {
    
     constructor(
+        public fecha: string,
+        public hora: string,
+        public codigoTarjeta: number,
         public dni: string,
-        public nombre: string,
-        public apellido: string,
-        public tarjetaIngreso: number,
-        public fechaIngreso: string,
-        public horaIngreso: string,
-        public idEmpleado: number
+        public nombreEmpleado: string
     ){}    
 }
