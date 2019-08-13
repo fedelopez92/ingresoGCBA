@@ -1,3 +1,30 @@
-<p>
-  historial works!
-</p>
+<div class="container w-75">
+  <div class="p-3 mb-2 bg-light text-dark">
+    <h6 class="font-weight-bold">Historial de la visita</h6>
+  </div>
+
+  <div *ngIf="show1">
+  <h6 class="font-weight-bold pt-1 pl-3">{{mensaje}}</h6>
+  </div>
+
+<div *ngIf="show2">
+<table class="table mt-4">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Fecha</th>
+      <th scope="col">Hora de ingreso</th>
+      <th scope="col">Visitó a</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of datos;let indice=index">
+      <th scope="row">{{indice+1}}</th>
+      <td>{{item.fecha}}</td>
+      <td>{{item.hora}}</td>
+      <td>{{item.nombreEmpleado}}</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>

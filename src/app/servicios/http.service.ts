@@ -8,8 +8,8 @@ export class HttpService {
 
   constructor(private httpClient: HttpClient) { }
 
-  traerEmpleados(){
-    return this.httpClient.get('http://localhost/servidorGCBA/empleados');
+  traerSectores(){
+    return this.httpClient.get('http://localhost/servidorGCBA/sectores');
   }
 
   traerEmpleadosPorSector(sector){
@@ -26,4 +26,5 @@ export class HttpService {
  altaIngreso(ingreso){
    return this.httpClient.post('http://localhost/servidorGCBA/ingresos', {ingreso: ingreso});
  }
+
 }

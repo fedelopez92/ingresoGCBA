@@ -53,12 +53,15 @@
 
           <div class="d-flex justify-content-end mt-4">
             <button type="button" class="btn btn-warning btn-sm" (click)="EnviarDatos()"><h6 class="text-danger font-weight-bold">Ingresar</h6></button>
+            <h6 class="text-danger font-weight-normal pt-2 pl-2">{{mensajePOST}}</h6>
           </div>
         </td>
 
       </tr>
   </table>
 </div>
+
+<app-historial [dni]="dniHistorial" [nombreApellido]="nomApeHistorial"></app-historial>
 
 
 

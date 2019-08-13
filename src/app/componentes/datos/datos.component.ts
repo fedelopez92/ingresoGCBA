@@ -22,10 +22,16 @@ export class DatosComponent implements OnInit {
   sectores: object;
   datosEmpleado: object;
   datosSector: object;
+  mensajePOST: string;
+  dniHistorial: number;
+  nomApeHistorial: string;
+
 
   constructor(private http: HttpService) { }
 
   ngOnInit() {
+
+    this.mensajePOST = " ";
 
     setInterval(() => {
       this.fechaHora = new Date();
@@ -34,7 +40,7 @@ export class DatosComponent implements OnInit {
       this.horaIngreso =  this.fechaHora.toLocaleString('es-AR', { hour: 'numeric',minute:'numeric', hour12: true }); 
     }, 1000);
     
-    this.http.traerEmpleados().subscribe( data => {
+    this.http.traerSectores().subscribe( data => {
 
       this.sectores = data;
     }, error => {
@@ -52,6 +58,9 @@ export class DatosComponent implements OnInit {
         JSON.parse(JSON.stringify(data)).forEach(element => {
           this.nombre = element.nombres;
           this.apellido = element.apellido;
+
+          this.dniHistorial = this.dni;
+          this.nomApeHistorial = this.nombre + " " + this.apellido;
         });
       }
       else{
@@ -76,12 +85,14 @@ export class DatosComponent implements OnInit {
       alert("Seleccione el sector y la persona a quien desea visitar");
     }
     else{
-    
+
       this.nombreEmpleado = JSON.parse(JSON.stringify(this.datosEmpleado)).nombre + " " + JSON.parse(JSON.stringify(this.datosEmpleado)).apellido;
       this.ingreso = new Ingreso(this.fechaIngreso, this.horaIngreso, this.tarjetaIngreso, this.dni.toString(), this.nombreEmpleado);
 
+      this.mensajePOST = "Comprobando tarjeta de ingreso...";
+
       this.http.altaIngreso(this.ingreso).subscribe( data => {
-        console.log(data);
+        this.mensajePOST = JSON.parse(JSON.stringify(data)).mensaje;
       }, error => {
         alert("No se puede acceder al servidor. Código de error: " + error.status);
       });
